@@ -1,0 +1,13 @@
+python=3.12
+rdkit
+psi4=1.11
+ambertools=26
+lammps
+parmed
+numpy
+scipy
+pandas
+pyyaml
+pip
+typing_extensions
+scikit-image
