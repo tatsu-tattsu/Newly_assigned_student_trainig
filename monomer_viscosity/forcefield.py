@@ -327,13 +327,6 @@ def make_gaff2_parameters(
     prmtop = workdir / "monomer.prmtop"
     inpcrd = workdir / "monomer.inpcrd"
 
-    export_esp_cube(
-        mol2_path=mol2,
-        output_path=workdir / "visualization" / "esp.cube",
-        grid_spacing=0.25,
-        padding=4.0,
-    )
-
     # AM1-BCC is the inexpensive automatic charge model.
     # Psi4 has already supplied the optimized geometry.
     run_command(
@@ -382,6 +375,13 @@ quit
         [tleap, "-f", str(leap)],
         workdir,
         workdir / "tleap.log",
+    )
+
+    export_esp_cube(
+        mol2_path=mol2,
+        output_path=workdir / "visualization" / "esp.cube",
+        grid_spacing=0.25,
+        padding=4.0,
     )
 
     return mol2, frcmod, prmtop, inpcrd

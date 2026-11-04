@@ -412,32 +412,33 @@ def _write_lammps_data(
         # ---------------------------------------------------------
         # Dihedral Coeffs
         # ---------------------------------------------------------
-        _write_section_header(fh, "Dihedral Coeffs")
+        if dihedral_types:
+            _write_section_header(fh, "Dihedral Coeffs")
 
-        for key, tid in sorted(
-            dihedral_types.items(),
-            key=lambda x: x[1],
-        ):
-            fh.write(
-                f"{tid:6d} "
-                f"{len(key):d}"
-            )
-
-            for k, n, phase in key:
+            for key, tid in sorted(
+                dihedral_types.items(),
+                key=lambda x: x[1],
+            ):
                 fh.write(
-                    f" {k:.10f} {int(n)} {phase:.10f}"
+                    f"{tid:6d} "
+                    f"{len(key):d}"
                 )
 
-            fh.write("\n")
+                for k, n, phase in key:
+                    fh.write(
+                        f" {k:.10f} {int(n)} {phase:.10f}"
+                    )
+
+                fh.write("\n")
 
         # ---------------------------------------------------------
         # Improper Coeffs
         # ---------------------------------------------------------
-        if nimpropers > 0:
+        if improper_types:
             _write_section_header(fh, "Improper Coeffs")
 
             for (k, psi_eq), tid in sorted(
-                ((key, value) for key, value in improper_types.items()),
+                improper_types.items(),
                 key=lambda x: x[1],
             ):
                 fh.write(
@@ -513,21 +514,22 @@ def _write_lammps_data(
         # ---------------------------------------------------------
         # Dihedrals
         # ---------------------------------------------------------
-        _write_section_header(fh, "Dihedrals")
+        if ndihedrals > 0:
+            _write_section_header(fh, "Dihedrals")
 
-        for i, dihedral in enumerate(parm.dihedrals, start=1):
-            a1 = dihedral.atom1.idx + 1
-            a2 = dihedral.atom2.idx + 1
-            a3 = dihedral.atom3.idx + 1
-            a4 = dihedral.atom4.idx + 1
+            for i, dihedral in enumerate(parm.dihedrals, start=1):
+                a1 = dihedral.atom1.idx + 1
+                a2 = dihedral.atom2.idx + 1
+                a3 = dihedral.atom3.idx + 1
+                a4 = dihedral.atom4.idx + 1
 
-            tid = dihedral_type_ids[id(dihedral)]
+                tid = dihedral_type_ids[id(dihedral)]
 
-            fh.write(
-                f"{i:8d} {tid:6d} "
-                f"{a1:8d} {a2:8d} "
-                f"{a3:8d} {a4:8d}\n"
-            )
+                fh.write(
+                    f"{i:8d} {tid:6d} "
+                    f"{a1:8d} {a2:8d} "
+                    f"{a3:8d} {a4:8d}\n"
+                )
 
         # ---------------------------------------------------------
         # Impropers
