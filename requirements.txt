@@ -8,6 +8,5 @@ numpy
 scipy
 pandas
 pyyaml
-pip
 typing_extensions
 scikit-image
